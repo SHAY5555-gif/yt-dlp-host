@@ -59,10 +59,16 @@ class YTDownloader:
                 formats = info.get('formats', [])
                 
                 if video_format:
-                    total_size += self._get_format_size(formats, video_format, is_video=True)
+                    video_size = self._get_format_size(formats, video_format, is_video=True)
+                    if not video_size:
+                        video_size = self._get_format_size(formats, 'bestvideo', is_video=True)
+                    total_size += video_size
                 
                 if audio_format and str(audio_format).lower() not in ['none', 'null']:
-                    total_size += self._get_format_size(formats, audio_format, is_video=False)
+                    audio_size = self._get_format_size(formats, audio_format, is_video=False)
+                    if not audio_size:
+                        audio_size = self._get_format_size(formats, 'bestaudio', is_video=False)
+                    total_size += audio_size
                 
                 return int(total_size * memory.SIZE_BUFFER) if total_size > 0 else -1
         except Exception as e:
