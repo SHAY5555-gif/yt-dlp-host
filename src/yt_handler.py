@@ -183,7 +183,14 @@ class YTDownloader:
         }
         
         if output_format:
-            opts['merge_output_format'] = output_format
+            if not is_video:
+                opts['extract_audio'] = True 
+                opts['postprocessors'] = [{
+                    'key': 'FFmpegExtractAudio',
+                    'preferredcodec': output_format,
+                }]
+            else:
+                opts['merge_output_format'] = output_format
         
         # Handle time ranges
         if is_live and task.get('duration'):
