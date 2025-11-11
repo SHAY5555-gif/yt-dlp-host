@@ -59,7 +59,7 @@ class YTDownloader:
                 ydl_opts['proxy'] = proxy_url
 
             # Add cookies file if available
-            cookies_file = '/app/youtube_cookies.txt'
+            cookies_file = '/etc/secrets/youtube_cookies.txt'
             if os.path.exists(cookies_file):
                 ydl_opts['cookiefile'] = cookies_file
             
@@ -229,8 +229,8 @@ class YTDownloader:
             opts['proxy'] = proxy_url
 
         # Add cookies file if available (helps bypass YouTube's bot detection)
-        # Cookies should be in Netscape format and stored at /app/youtube_cookies.txt
-        cookies_file = '/app/youtube_cookies.txt'
+        # Cookies should be in Netscape format and stored at /etc/secrets/youtube_cookies.txt
+        cookies_file = '/etc/secrets/youtube_cookies.txt'
         if os.path.exists(cookies_file):
             opts['cookiefile'] = cookies_file
         
