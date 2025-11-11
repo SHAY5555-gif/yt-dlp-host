@@ -159,8 +159,11 @@ auth_manager = AuthManager()
 memory_manager = MemoryManager()
 
 if not Storage.load_keys():
-    auth_manager.create_key(
+    admin_key = auth_manager.create_key(
         "admin",
-        ["create_key", "delete_key", "get_key", "get_keys", 
+        ["create_key", "delete_key", "get_key", "get_keys",
          "get_video", "get_audio", "get_live_video", "get_live_audio", "get_info"]
     )
+    print("=" * 60)
+    print(f"Admin API Key: {admin_key}")
+    print("=" * 60)
