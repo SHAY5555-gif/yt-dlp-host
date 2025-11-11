@@ -13,7 +13,7 @@ from yt_dlp.utils import download_range_func
 from src.storage import Storage
 from src.auth import memory_manager
 from src.models import TaskStatus, TaskType
-from config import storage, memory
+from config import storage, memory, proxy
 from config import task as task_config
 
 class YTDownloader:
@@ -52,6 +52,11 @@ class YTDownloader:
                 'skip_download': True,
                 'extractor_args': { 'youtube': { 'player_client': ['default', '-tv_simply'], }, },
             }
+
+            # Add proxy if configured
+            proxy_url = proxy.get_proxy()
+            if proxy_url:
+                ydl_opts['proxy'] = proxy_url
             
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 info = ydl.extract_info(url, download=False)
@@ -124,7 +129,12 @@ class YTDownloader:
                 'extract_flat': True,
                 'skip_download': True
             }
-            
+
+            # Add proxy if configured
+            proxy_url = proxy.get_proxy()
+            if proxy_url:
+                ydl_opts['proxy'] = proxy_url
+
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 info = ydl.extract_info(task['url'], download=False)
             
@@ -207,6 +217,11 @@ class YTDownloader:
             'outtmpl': os.path.join(download_path, output_name),
             'extractor_args': { 'youtube': { 'player_client': ['default', '-tv_simply'], }, },
         }
+
+        # Add proxy if configured
+        proxy_url = proxy.get_proxy()
+        if proxy_url:
+            opts['proxy'] = proxy_url
         
         if output_format:
             if not is_video:
