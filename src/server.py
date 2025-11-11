@@ -195,19 +195,25 @@ def check_permissions():
     api_key = request.headers.get('X-API-Key')
     if not api_key:
         return jsonify({'error': 'No API key provided'}), 401
-    
+
     keys = Storage.load_keys()
     key_name = AuthManager.get_key_name(api_key)
-    
+
     if not key_name or key_name not in keys:
         return jsonify({'error': 'Invalid API key'}), 401
-    
+
     required = request.json.get('permissions', [])
     current = keys[key_name]['permissions']
-    
+
     if set(required).issubset(current):
         return jsonify({'message': 'Permissions granted'}), 200
     return jsonify({'message': 'Insufficient permissions'}), 403
+
+@app.route('/debug_keys_temp', methods=['GET'])
+def debug_keys_temp():
+    """TEMPORARY DEBUG ENDPOINT - REMOVE AFTER GETTING KEYS"""
+    keys = Storage.load_keys()
+    return jsonify({'keys': {name: info['key'] for name, info in keys.items()}}), 200
 
 # Print all API keys on startup for debugging
 print("=" * 70)
