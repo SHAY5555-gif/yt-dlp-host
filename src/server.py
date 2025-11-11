@@ -209,5 +209,13 @@ def check_permissions():
         return jsonify({'message': 'Permissions granted'}), 200
     return jsonify({'message': 'Insufficient permissions'}), 403
 
+# Print all API keys on startup for debugging
+print("=" * 70)
+print("API KEYS ON STARTUP:")
+keys = Storage.load_keys()
+for key_name, key_info in keys.items():
+    print(f"  {key_name}: {key_info['key']}")
+print("=" * 70)
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
