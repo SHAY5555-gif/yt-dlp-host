@@ -57,6 +57,11 @@ class YTDownloader:
             proxy_url = proxy.get_proxy()
             if proxy_url:
                 ydl_opts['proxy'] = proxy_url
+
+            # Add cookies file if available
+            cookies_file = '/app/youtube_cookies.txt'
+            if os.path.exists(cookies_file):
+                ydl_opts['cookiefile'] = cookies_file
             
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 info = ydl.extract_info(url, download=False)
@@ -222,6 +227,12 @@ class YTDownloader:
         proxy_url = proxy.get_proxy()
         if proxy_url:
             opts['proxy'] = proxy_url
+
+        # Add cookies file if available (helps bypass YouTube's bot detection)
+        # Cookies should be in Netscape format and stored at /app/youtube_cookies.txt
+        cookies_file = '/app/youtube_cookies.txt'
+        if os.path.exists(cookies_file):
+            opts['cookiefile'] = cookies_file
         
         if output_format:
             if not is_video:
